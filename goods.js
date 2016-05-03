@@ -1,7 +1,7 @@
 /**
  * Created by renzhaotian on 16-4-29.
  */
-    var logger = require("./logService");
+var logger = require("./logService");
 module.exports = function(app){
 
     function goodsDel(req,res,next) {
