@@ -55,14 +55,22 @@ module.exports = function(app){
         },
             "checksum":"cd9824063a17d23a6ac255a21a487447"
         };
+        var msg = {};
         async.series([
+            function(cb){
+                var reqBody = req.body;
+                msg["version"] = reqBody.version;
+                msg["msgId"] = msgIdGen();
+                msg["msgType"] = "EDI_INQUIRY_CREATE";
+                msg["msgData"] =
+            },
             //存到本地数据库中
             function(cb){
                 db.new("test"+"renzhaotian"+_suffix,example,cb)
             },
             function(cb){
                 _request.post("127.0.0.1:3300/api/erp/" + erpId)
-                    .field
+                    .field("msg",msg)
             }
         ],function(err,result){
             if(err){
