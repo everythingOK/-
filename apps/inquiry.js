@@ -62,7 +62,7 @@ module.exports = function(app){
                 msg["version"] = reqBody.version;
                 msg["msgId"] = msgIdGen();
                 msg["msgType"] = "EDI_INQUIRY_CREATE";
-                msg["msgData"] =
+                msg["msgData"] ={}
             },
             //存到本地数据库中
             function(cb){
