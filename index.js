@@ -30,9 +30,17 @@ function welcome(req,res,next) {
     res.json('欢迎使用成都雨诺"ERP"系统');
 }
 app.get("/",welcome);
-require(_apps+"/goods.js")(app);
-require(_apps+"/order.js")(app);
-require(_apps+"/return.js")(app);
-require(_apps+"/inquiry.js")(app);
-require(_apps+"/quotation.js")(app);
+var bodyParser = require('body-parser');
+app.use( bodyParser.json() );
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+    extended: true
+}));
+
+
+require(_apps+"/auth/controller.js")(app)
+//require(_apps+"/goods.js")(app);
+//require(_apps+"/order.js")(app);
+//require(_apps+"/return.js")(app);
+//require(_apps+"/inquiry.js")(app);
+//require(_apps+"/quotation.js")(app);
 app.listen(9527);
