@@ -49,89 +49,127 @@ module.exports = function(app){
         ]
     };
     var userList = [{
-            GUID:"0000000000",
-            UserGuid:"0000000000",
-            UserName:"buyer1",
-            USERCompanyName:"买家1",
-            EnterpriceEntity:"买买提",
-            LicenseNo:"0000000000",
-            EntCode:"buyer1",
-            UserCode:"testuserbuyer",
-            erpCode:"00000",
-            CustomerId:101
-        },
-        {
-            GUID:"0000000001",
-            UserGuid:"0000000001",
-            UserName:"seller1",
-            USERCompanyName:"卖家1",
-            EnterpriceEntity:"卖卖提",
-            LicenseNo:"0000000001",
-            EntCode:"seller1",
-            UserCode:"testuserseller",
-            erpCode:"00001",
-            CustomerId:102
-        },
-        {
             GUID:"1111111111",
             UserGuid:"1111111111",
             UserName:"both1",
-            USERCompanyName:"双双1",
-            EnterpriceEntity:"双双提1",
+            USERCompanyName:"买卖提1",
+            EnterpriceEntity:"买卖提1",
             LicenseNo:"1111111111",
             EntCode:"both1",
             UserCode:"testuserboth1",
             erpCode:"11111",
-            CustomerId:201
+            CustomerId:101
         },
         {
             GUID:"2222222222",
             UserGuid:"2222222222",
             UserName:"both2",
-            USERCompanyName:"双双2",
-            EnterpriceEntity:"双双提2",
+            USERCompanyName:"买卖提2",
+            EnterpriceEntity:"买卖提2",
             LicenseNo:"2222222222",
             EntCode:"both2",
             UserCode:"testuserboth2",
             erpCode:"22222",
-            CustomerId:202
+            CustomerId:102
         },
         {
             GUID:"3333333333",
             UserGuid:"3333333333",
             UserName:"both3",
-            USERCompanyName:"双双3",
-            EnterpriceEntity:"双双提3",
+            USERCompanyName:"买卖提3",
+            EnterpriceEntity:"买卖提3",
             LicenseNo:"3333333333",
             EntCode:"both3",
-            UserCode:"testuserboth3",
+            UserCode:"testuserboth1",
             erpCode:"33333",
-            CustomerId:203
+            CustomerId:103
         },
         {
             GUID:"4444444444",
             UserGuid:"4444444444",
             UserName:"both4",
-            USERCompanyName:"双双4",
-            EnterpriceEntity:"双双提4",
+            USERCompanyName:"买卖提4",
+            EnterpriceEntity:"买卖提4",
             LicenseNo:"4444444444",
             EntCode:"both4",
             UserCode:"testuserboth4",
             erpCode:"44444",
-            CustomerId:204
+            CustomerId:104
         },
         {
             GUID:"5555555555",
             UserGuid:"5555555555",
             UserName:"both5",
-            USERCompanyName:"双双5",
-            EnterpriceEntity:"双双提5",
+            USERCompanyName:"买卖提5",
+            EnterpriceEntity:"买卖提5",
             LicenseNo:"5555555555",
             EntCode:"both5",
             UserCode:"testuserboth5",
             erpCode:"55555",
-            CustomerId:205
-        }];
+            CustomerId:105
+        },
+        {
+            GUID:"6666666666",
+            UserGuid:"6666666666",
+            UserName:"both6",
+            USERCompanyName:"买卖提6",
+            EnterpriceEntity:"买卖提6",
+            LicenseNo:"6666666666",
+            EntCode:"both6",
+            UserCode:"testuserboth6",
+            erpCode:"66666",
+            CustomerId:106
+        },
+        {
+            GUID:"7777777777",
+            UserGuid:"7777777777",
+            UserName:"both7",
+            USERCompanyName:"买卖提7",
+            EnterpriceEntity:"买卖提7",
+            LicenseNo:"7777777777",
+            EntCode:"both7",
+            UserCode:"testuserboth7",
+            erpCode:"77777",
+            CustomerId:107
+        },
+        {
+            GUID:"8888888888",
+            UserGuid:"8888888888",
+            UserName:"both8",
+            USERCompanyName:"买卖提8",
+            EnterpriceEntity:"买卖提8",
+            LicenseNo:"8888888888",
+            EntCode:"both8",
+            UserCode:"testuserboth8",
+            erpCode:"88888",
+            CustomerId:108
+        },
+        {
+            GUID:"9999999999",
+            UserGuid:"9999999999",
+            UserName:"both9",
+            USERCompanyName:"买卖提9",
+            EnterpriceEntity:"买卖提9",
+            LicenseNo:"9999999999",
+            EntCode:"both9",
+            UserCode:"testuserboth9",
+            erpCode:"99999",
+            CustomerId:109
+        },
+        {
+            GUID:"0000000000",
+            UserGuid:"0000000000",
+            UserName:"both0",
+            USERCompanyName:"买卖提0",
+            EnterpriceEntity:"买卖提0",
+            LicenseNo:"0000000000",
+            EntCode:"both0",
+            UserCode:"testuserboth0",
+            erpCode:"00000",
+            CustomerId:110
+        }
+    ];
+    var infoList = {Customer:userList};
     var MsgGen = function(module,userInfo){
         var tmp = module;
         _.each(userInfo,function(value,key,list){
@@ -149,14 +187,24 @@ module.exports = function(app){
         _u.each(userList,function(value){
             var option = {
                 insert:"CustomerDB_renzhaotian_" + value.UserName +".ClientSellerInfo",
-                set:[{
-
-                }]
+                set:userList
             }
         })
         var customerDB = "CustomerDB_renzhaotian_";
 
     }
+    var CloudDBsqlGen = function(userName,infoList){
+        _.each(infoList,function(value,key){
+            var option = {
+                insert:"CloudDB_" + userName + "." + key,
+                set:value
+            }
+            var sqlList = sqlobj(option);
+            console.log(sqlList)
+        })
+    };
+    CloudDBsqlGen("renzhaotian",infoList);
+
     var authMsg = function(req,res){
         var UserCode = req.body.UserCode;
         var UserInfo = _.find(userList,function(item){
@@ -167,4 +215,148 @@ module.exports = function(app){
         res.json(msg)
     };
     app.post("/Handlers/login.ashx",authMsg)
+}
+var _ = require("underscore")
+var sqlobj = require("sqlobj")
+var userList = [{
+    GUID:"1111111111",
+    UserGuid:"1111111111",
+    UserName:"both1",
+    USERCompanyName:"买卖提1",
+    EnterpriceEntity:"买卖提1",
+    LicenseNo:"1111111111",
+    EntCode:"both1",
+    UserCode:"testuserboth1",
+    erpCode:"111111",
+    CustomerId:101
+},
+    {
+        GUID:"2222222222",
+        UserGuid:"2222222222",
+        UserName:"both2",
+        USERCompanyName:"买卖提2",
+        EnterpriceEntity:"买卖提2",
+        LicenseNo:"2222222222",
+        EntCode:"both2",
+        UserCode:"testuserboth2",
+        erpCode:"22222",
+        CustomerId:102
+    },
+    {
+        GUID:"3333333333",
+        UserGuid:"3333333333",
+        UserName:"both3",
+        USERCompanyName:"买卖提3",
+        EnterpriceEntity:"买卖提3",
+        LicenseNo:"3333333333",
+        EntCode:"both3",
+        UserCode:"testuserboth1",
+        erpCode:"33333",
+        CustomerId:103
+    },
+    {
+        GUID:"4444444444",
+        UserGuid:"4444444444",
+        UserName:"both4",
+        USERCompanyName:"买卖提4",
+        EnterpriceEntity:"买卖提4",
+        LicenseNo:"4444444444",
+        EntCode:"both4",
+        UserCode:"testuserboth4",
+        erpCode:"44444",
+        CustomerId:104
+    },
+    {
+        GUID:"5555555555",
+        UserGuid:"5555555555",
+        UserName:"both5",
+        USERCompanyName:"买卖提5",
+        EnterpriceEntity:"买卖提5",
+        LicenseNo:"5555555555",
+        EntCode:"both5",
+        UserCode:"testuserboth5",
+        erpCode:"55555",
+        CustomerId:105
+    },
+    {
+        GUID:"6666666666",
+        UserGuid:"6666666666",
+        UserName:"both6",
+        USERCompanyName:"买卖提6",
+        EnterpriceEntity:"买卖提6",
+        LicenseNo:"6666666666",
+        EntCode:"both6",
+        UserCode:"testuserboth6",
+        erpCode:"66666",
+        CustomerId:106
+    },
+    {
+        GUID:"7777777777",
+        UserGuid:"7777777777",
+        UserName:"both7",
+        USERCompanyName:"买卖提7",
+        EnterpriceEntity:"买卖提7",
+        LicenseNo:"7777777777",
+        EntCode:"both7",
+        UserCode:"testuserboth7",
+        erpCode:"77777",
+        CustomerId:107
+    },
+    {
+        GUID:"8888888888",
+        UserGuid:"8888888888",
+        UserName:"both8",
+        USERCompanyName:"买卖提8",
+        EnterpriceEntity:"买卖提8",
+        LicenseNo:"8888888888",
+        EntCode:"both8",
+        UserCode:"testuserboth8",
+        erpCode:"88888",
+        CustomerId:108
+    },
+    {
+        GUID:"9999999999",
+        UserGuid:"9999999999",
+        UserName:"both9",
+        USERCompanyName:"买卖提9",
+        EnterpriceEntity:"买卖提9",
+        LicenseNo:"9999999999",
+        EntCode:"both9",
+        UserCode:"testuserboth9",
+        erpCode:"99999",
+        CustomerId:109
+    },
+    {
+        GUID:"0000000000",
+        UserGuid:"0000000000",
+        UserName:"both0",
+        USERCompanyName:"买卖提0",
+        EnterpriceEntity:"买卖提0",
+        LicenseNo:"0000000000",
+        EntCode:"both0",
+        UserCode:"testuserboth0",
+        erpCode:"00000",
+        CustomerId:110
+    }
+];
+var cloudList = {Customer:userList};
+var customerList = {ClientBuyerInfo:userList,ClientSellerInfo:userList}
+var CloudDBsqlGen = function(userName,cloudList){
+    _.each(cloudList,function(value,key){
+        var option = {
+            insert:"CloudDB_" + userName + "." + key,
+            set:value
+        }
+        var sqlList = sqlobj(option);
+        console.log(sqlList)
+    })
+};
+CloudDBsqlGen("renzhaotian",cloudList);
+var CustomerClientsqlGen = function(userName,userList){
+    var ClientList = [];
+    _.each(userList,function(value,key){
+        ClientList = _.reject(userList,function(user){
+            return user.erpCode == value.erpCode;
+        })
+    })
 }
