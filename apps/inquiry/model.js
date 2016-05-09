@@ -57,12 +57,20 @@ var goodsList = [
         "BILLNO": "SC201511010029-SZQ-01",
         "BALANCEPERIOD":0}];
 var sellerList = [
-    {"UserCode":"testuserbuyer",SUPPLIERCODE:"11111",idNum:4,Type:"both"},
-    {"UserCode":"testuserseller",SUPPLIERCODE:"22222",idNum:4,Type:"both"},
-    {"UserCode":"testuserboth1",SUPPLIERCODE:"33333",idNum:5,Type:"both"}];
+    {"UserCode":"testuserboth1",SUPPLIERCODE:"11111",idNum:101,Type:"both"},
+    {"UserCode":"testuserboth2",SUPPLIERCODE:"22222",idNum:102,Type:"both"},
+    {"UserCode":"testuserboth3",SUPPLIERCODE:"33333",idNum:103,Type:"both"},
+    {"UserCode":"testuserboth4",SUPPLIERCODE:"44444",idNum:104,Type:"both"},
+    {"UserCode":"testuserboth5",SUPPLIERCODE:"55555",idNum:105,Type:"both"},
+    {"UserCode":"testuserboth6",SUPPLIERCODE:"66666",idNum:106,Type:"both"},
+    {"UserCode":"testuserboth7",SUPPLIERCODE:"77777",idNum:107,Type:"both"},
+    {"UserCode":"testuserboth8",SUPPLIERCODE:"88888",idNum:108,Type:"both"},
+    {"UserCode":"testuserboth9",SUPPLIERCODE:"99999",idNum:109,Type:"both"},
+    {"UserCode":"testuserboth0",SUPPLIERCODE:"00000",idNum:110,Type:"both"},
+    ];
 
 var UGmap = {
-    "金花消痤颗粒":["testuserseller","testuserboth1"],
+    "金花消痤颗粒":["testuserboth1","testuserboth2"],
     "愈创甘油醚糖浆":["testuserseller"]
 };
 var inquiryMsgDataGen = function(sellerList, goodsList, UGmap,inquiryGuid) {
