@@ -215,7 +215,7 @@ module.exports = function(app){
         res.json(msg)
     };
     app.post("/Handlers/login.ashx",authMsg)
-}
+};
 var _ = require("underscore")
 var sqlobj = require("sqlobj")
 var userList = [{
@@ -227,7 +227,7 @@ var userList = [{
     LicenseNo:"1111111111",
     EntCode:"both1",
     UserCode:"testuserboth1",
-    erpCode:"111111",
+    erpCode:"11111",
     CustomerId:101
 },
     {
@@ -339,24 +339,125 @@ var userList = [{
         CustomerId:110
     }
 ];
-var cloudList = {Customer:userList};
-var customerList = {ClientBuyerInfo:userList,ClientSellerInfo:userList}
-var CloudDBsqlGen = function(userName,cloudList){
-    _.each(cloudList,function(value,key){
+var userList2 = _.first(userList,2)
+var CloudDBCustomersqlGen = function(userName,CloudCustomerList){
+    var sqlList = [];
+    _.each(CloudCustomerList,function(value){
+        var UserInfo = {};
+        UserInfo.id = value.CustomerId;
+        UserInfo.customerName = value.USERCompanyName;
+        UserInfo.enterpriseType = "BOTH";
+        UserInfo.customerDBSuffix = value.EntCode;
+        UserInfo.enabled = true;
+        UserInfo.businessLicense = value.LicenseNo;
+        UserInfo.legalRepresentative = value.EnterpriceEntity;
+        UserInfo.erpIsAvailable = true;
         var option = {
-            insert:"CloudDB_" + userName + "." + key,
-            set:value
-        }
-        var sqlList = sqlobj(option);
-        console.log(sqlList)
+            insert:"CloudDB_" + userName + "." + "Customer",
+            set:UserInfo
+        };
+        var sql = sqlobj(option);
+        console.log(sql+";")
+        //sqlList.push(sql)
     })
+    return sqlList;
 };
-CloudDBsqlGen("renzhaotian",cloudList);
+CloudDBCustomersqlGen("renzhaotian",userList)
 var CustomerClientsqlGen = function(userName,userList){
-    var ClientList = [];
-    _.each(userList,function(value,key){
+    var sqlList = [];
+    _.each(userList,function(DBowner,key){
+        var ClientList = [];
         ClientList = _.reject(userList,function(user){
-            return user.erpCode == value.erpCode;
+            return user.erpCode == DBowner.erpCode;
+        });
+        //console.log(DBowner.EntCode);
+        _.each(ClientList,function(value,key){
+            var ClientBuyerRow = {};
+            ClientBuyerRow.enterpriseId = value.CustomerId;
+            ClientBuyerRow.enabled = true;
+            ClientBuyerRow.erpCode = value.erpCode;
+            ClientBuyerRow.businessLicense = value.LicenseNo;
+            ClientBuyerRow.buyerOperatorId = "123456";
+            var option1 = {
+                insert:"CustomerDB_" + userName + "_" + DBowner.EntCode + ".ClientBuyerInfo",
+                set:ClientBuyerRow
+            };
+            var sqlBuyer = sqlobj(option1);
+            var ClientSellerRow = ClientBuyerRow;
+            delete ClientSellerRow.buyerOperatorId;
+            var option2 = {
+                insert:"CustomerDB_" + userName + "_" + DBowner.EntCode + ".ClientSellerInfo",
+                set:ClientSellerRow
+            };
+            var sqlSeller = sqlobj(option2);
+            console.log(sqlBuyer+";");
+            sqlList.push(sqlBuyer+";");
+            console.log(sqlSeller+";")
+            sqlList.push(sqlSeller+";");
         })
     })
-}
+    return [];
+};
+CustomerClientsqlGen("renzhaotian",userList)
+var module = {
+    "UserIdentityInfo": [
+        {
+            "GUID": "0000011111",
+            "UserGuid": "0000011111",
+            "UserImage": "images/defaultuser.png",
+            "RegisteTime": "2014-07-19T11:45:55.47",
+            "RegisteType": 1,
+            "ResisteSource": "0000011111",
+            "UserName": "冯张龙",
+            "Sex": "1",
+            "Phone": "18653206277",
+            "Tel": "",
+            "EMail": "cloud@romens.cn",
+            "IMCode": "270130490",
+            "CompanyGUID": "222222",
+            "Address": "成都雨诺地2",
+            "HomePage": null,
+            "USERCompanyName": "成都雨诺公司名2",
+            "GUID1": "222222",
+            "EntCode": "seller1",
+            "EntName": "成都雨诺",
+            "Address1": "成都雨诺地址21",
+            "EnterpriceEntity": "张力",
+            "Tel1": "18653206277",
+            "ZipCode": "266071",
+            "EMail1": "cloud@romens.cn",
+            "AdministerGUID": "0000011111",
+            "State": 0,
+            "LicenseNo": "0000011111",
+            "LicenseImageUrl": "http://IMMgr.yiyao365.cn/Img/20160429133116123.png"
+        }
+    ],
+    "UserBaseInfo": [
+        {
+            "UserCode": "testuserseller"
+        }
+    ],
+    "UserType": [
+        {
+            "Role": "1"
+        }
+    ]
+};
+var respondGen = function(module,list){
+    var responds = [];
+
+    _.each(list,function(item){
+        var tmp = module;
+        _.each(item,function(value,key){
+            tmp.UserIdentityInfo[0][key] = value;
+        });
+        delete tmp.UserIdentityInfo[0].UserCode;
+        delete tmp.UserIdentityInfo[0].CustomerId;
+        delete tmp.UserIdentityInfo[0].erpCode;
+        tmp.UserBaseInfo[0].UserCode = item.UserCode;
+        console.log(JSON.stringify(tmp));
+        responds.push(tmp)
+    });
+    return responds;
+};
+//respondGen(module, userList)

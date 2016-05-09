@@ -29,15 +29,28 @@ global._sqlobj = require("sqlobj");
 function welcome(req,res,next) {
     res.json('欢迎使用成都雨诺"ERP"系统');
 }
-app.get("/",welcome);
 var bodyParser = require('body-parser');
 app.use( bodyParser.json() );
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
 }));
+app.use(function(req,res,next){
+    console.log("req.headers.host is " + req.headers.host);
+    console.log("req._parsedUrl.path is " + req._parsedUrl.path);
+    console.log("req.params is " + JSON.stringify(req.params));
+    console.log("req.query is " + JSON.stringify(req.query))
+    console.log("req.body is " + JSON.stringify(req.body));
+    next()
+});
+app.get("/",welcome);
+app.post("/ClientHandler.ashx",function(req,res){
+    console.log(JSON.stringify(req.body))
+    res.json({"status":200,"text":JSON.stringify(JSON.parse("{\r\n  \"status\": 200,\r\n  \"msg\": \"操作成功\",\r\n  \"data\": {\r\n    \"result\": \"ERP接收报价单成功\"\r\n  }\r\n}"))})
+});
 
 
-require(_apps+"/auth/controller.js")(app)
+
+//require(_apps+"/auth/controller.js")(app)
 //require(_apps+"/goods.js")(app);
 //require(_apps+"/order.js")(app);
 //require(_apps+"/return.js")(app);
