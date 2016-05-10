@@ -38,3 +38,5 @@ module.exports = function(app){
         .get(quotationGet)
 
 };
+var _ = require("underscore")
+console.log(_.random(1,10))
