@@ -18,18 +18,19 @@ GoodsList.result = [];
 var abc = [];
 var goodsListxxx = [];
 var sellerList = [
-    {"UserCode":"testuserboth1",SUPPLIERCODE:"11111",idNum:101,Type:"both"},
-    {"UserCode":"testuserboth2",SUPPLIERCODE:"22222",idNum:102,Type:"both"},
-    {"UserCode":"testuserboth3",SUPPLIERCODE:"33333",idNum:103,Type:"both"},
-    {"UserCode":"testuserboth4",SUPPLIERCODE:"44444",idNum:104,Type:"both"},
-    {"UserCode":"testuserboth5",SUPPLIERCODE:"55555",idNum:105,Type:"both"},
-    {"UserCode":"testuserboth6",SUPPLIERCODE:"66666",idNum:106,Type:"both"},
-    {"UserCode":"testuserboth7",SUPPLIERCODE:"77777",idNum:107,Type:"both"},
-    {"UserCode":"testuserboth8",SUPPLIERCODE:"88888",idNum:108,Type:"both"},
-    {"UserCode":"testuserboth9",SUPPLIERCODE:"99999",idNum:109,Type:"both"},
-    {"UserCode":"testuserboth0",SUPPLIERCODE:"00000",idNum:110,Type:"both"}
+    {"UserCode":"testuserboth1",SUPPLIERCODE:"1",idNum:101,Type:"both"},
+    {"UserCode":"testuserboth2",SUPPLIERCODE:"2",idNum:102,Type:"both"},
+    {"UserCode":"testuserboth3",SUPPLIERCODE:"3",idNum:103,Type:"both"},
+    {"UserCode":"testuserboth4",SUPPLIERCODE:"4",idNum:104,Type:"both"},
+    {"UserCode":"testuserboth5",SUPPLIERCODE:"5",idNum:105,Type:"both"},
+    {"UserCode":"testuserboth6",SUPPLIERCODE:"6",idNum:106,Type:"both"},
+    {"UserCode":"testuserboth7",SUPPLIERCODE:"7",idNum:107,Type:"both"},
+    {"UserCode":"testuserboth8",SUPPLIERCODE:"8",idNum:108,Type:"both"},
+    {"UserCode":"testuserboth9",SUPPLIERCODE:"9",idNum:109,Type:"both"},
+    {"UserCode":"testuserboth10",SUPPLIERCODE:"10",idNum:110,Type:"both"},
+    {"UserCode":"testuserboth0",SUPPLIERCODE:"0",idNum:100,Type:"both"}
 ];
-mysql.query("select unicode,skuNo,goodsNo,commonName,packageQty from CustomerDB_renzhaotian_both1.GoodsInfo",function(err,result){
+mysql.query("select unicode,skuNo,goodsNo,commonName,packageQty from CustomerDB_renzhaotian_both7.GoodsInfo",function(err,result){
     if(err){
         console.log(err)
     }
@@ -59,6 +60,7 @@ mysql.query("select unicode,skuNo,goodsNo,commonName,packageQty from CustomerDB_
         });
 
         _.map(msgData,function(item){
+
             item.GUID = inquiryGuid;
             var goodInfo = _.find(goodsList,function(good){
                 return good.PLATFORMCODE == item.good;
@@ -94,13 +96,14 @@ mysql.query("select unicode,skuNo,goodsNo,commonName,packageQty from CustomerDB_
 
     };
     var sups = [];
-    for(var j = 0; j<=9; j++){
+    for(var j = 8; j<=9; j++){
         sups.push("testuserboth"+j)
     }
-    for(var i = 1;i<=30;i++){
+    var sups1 = ["testuserboth0","testuserboth2"]
+    for(var i = 3;i<=5;i++){
 
 
-        thirtyGoodsOneSupplies[i] = sups
+        thirtyGoodsOneSupplies[i] = sups1;
     }
     console.log(thirtyGoodsOneSupplies);
     var inquiry = inquiryMsgDataGen(sellerList,goodsListxxx,thirtyGoodsOneSupplies,inquiryGuid);
@@ -122,7 +125,7 @@ mysql.query("select unicode,skuNo,goodsNo,commonName,packageQty from CustomerDB_
     var testMsg = testGen(inquiry);
 
     console.log(testMsg.msgData.PURCHASEPLANTEMP);
-    request.post("http://127.0.0.1:3300" + "/api/erp/107")
+    request.post("http://127.0.0.1:3300" + "/api/erp/106")
         .send({msg: JSON.stringify(testMsg)})
         .set('Accept', 'application/json')
         .end(function(err,res){
