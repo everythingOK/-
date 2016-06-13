@@ -58,7 +58,7 @@ mysql.query("select id,unicode,skuNo,licenseNo,commonName,packageQty from Custom
     }
     console.log(result.length);
     var orderGUID = "M201605050160-" + _.random(10000,99999);
-    var goodsList = goodsListGen(result,[2,3,4]);
+    var goodsList = goodsListGen(result,[2]);
     var timeObj1 = {
         "billDate": "2016-05-08T11:11:11",
         "usefulData":"2016-10-08T12:12:12",
@@ -73,7 +73,7 @@ mysql.query("select id,unicode,skuNo,licenseNo,commonName,packageQty from Custom
     var msgData = orderMsgDataGen(buyerErpCode, goodsList,orderGUID,timeObj1);
     var msg = orderMsgGen(msgData);
     console.log(msg.msgData);
-    request.post("http://127.0.0.1:3300" + "/api/erp/106")
+    request.post("http://127.0.0.1:3300" + "/api/erp/100")
         .send({msg: JSON.stringify(msg)})
         .set('Accept', 'application/json')
         .end(function(err,res){

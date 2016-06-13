@@ -239,7 +239,7 @@ var CloudDBCustomersqlGen = function(userName,CloudCustomerList){
         UserInfo.legalRepresentative = value.EnterpriceEntity;
         UserInfo.erpIsAvailable = true;
         var option = {
-            insert:"CloudDB" + userName + "." + "Customer",
+            insert:"CloudDB" + "_" + userName + "." + "Customer",
             set:UserInfo
         };
         var sql = sqlobj(option);
@@ -248,7 +248,7 @@ var CloudDBCustomersqlGen = function(userName,CloudCustomerList){
     })
     return sqlList;
 };
-CloudDBCustomersqlGen("",userList99)
+CloudDBCustomersqlGen("renzhaotian",userList10)
 var CustomerClientsqlGen = function(userName,userList){
     var sqlList = [];
     _.each(userList,function(DBowner,key){
@@ -265,14 +265,14 @@ var CustomerClientsqlGen = function(userName,userList){
             ClientBuyerRow.businessLicense = value.LicenseNo;
             ClientBuyerRow.buyerOperatorId = "123456";
             var option1 = {
-                insert:"CustomerDB" + userName + "_" + DBowner.EntCode + ".ClientBuyerInfo",
+                insert:"CustomerDB" + "_" + userName + "_" + DBowner.EntCode + ".ClientBuyerInfo",
                 set:ClientBuyerRow
             };
             var sqlBuyer = sqlobj(option1);
             var ClientSellerRow = ClientBuyerRow;
             delete ClientSellerRow.buyerOperatorId;
             var option2 = {
-                insert:"CustomerDB" + userName + "_" + DBowner.EntCode + ".ClientSellerInfo",
+                insert:"CustomerDB" + "_" + userName + "_" + DBowner.EntCode + ".ClientSellerInfo",
                 set:ClientSellerRow
             };
             var sqlSeller = sqlobj(option2);
@@ -284,7 +284,7 @@ var CustomerClientsqlGen = function(userName,userList){
     })
     return [];
 };
-CustomerClientsqlGen("",userList99)
+CustomerClientsqlGen("renzhaotian",userList10)
 var example = {
     "UserIdentityInfo": [
         {
@@ -346,5 +346,5 @@ var respondGen = function(module,list){
     });
     return responds;
 };
-console.log(JSON.stringify(respondGen(example,userList10)));
+//console.log(JSON.stringify(respondGen(example,userList10)));
 //respondGen(module, userList)
